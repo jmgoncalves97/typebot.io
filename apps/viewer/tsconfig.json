@@ -19,6 +19,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "composite": true,
     "downlevelIteration": true
   },
