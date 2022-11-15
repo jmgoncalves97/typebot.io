@@ -10,6 +10,8 @@ authenticatedState.json
 playwright-report
 dist
 test-results
+test/results
+test/report
 **/api/scripts
 .sentryclirc
 .docusaurus
