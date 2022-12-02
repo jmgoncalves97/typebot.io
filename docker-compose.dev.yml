@@ -36,6 +36,5 @@ services:
     environment:
       POSTGRES_DB: 'typebot'
       POSTGRES_PASSWORD: 'typebot'
-
 volumes:
   db_data:
