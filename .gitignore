@@ -32,4 +32,5 @@ dump.tar
 
 __env.js
 
-invalidTypebots.json
+typebotsToFix.json
+**/scripts/logs
