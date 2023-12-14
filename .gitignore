@@ -5,6 +5,7 @@ workspace.code-workspace
 .DS_Store
 .pnpm-store
 .turbo
+.idea
 authenticatedState.json
 playwright-report
 dist
