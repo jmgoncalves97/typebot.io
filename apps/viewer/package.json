@@ -13,7 +13,7 @@
   "dependencies": {
     "@sentry/nextjs": "7.17.3",
     "aws-sdk": "2.1245.0",
-    "bot-engine": "*",
+    "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "cuid": "2.1.8",
     "db": "workspace:*",

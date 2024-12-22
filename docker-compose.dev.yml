@@ -1,7 +1,41 @@
 version: '3.3'
 services:
-  postgres:
-    image: postgres:13
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/app
+    working_dir: /app
+    # command: sh -c "pnpm dev"
+    command: sh -c "cd apps/builder && pm2-runtime start --name=typebot bun -- start"
+    ports:
+      - '3001:3000'
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - VIEWER_URL=${VIEWER_URL}
+    depends_on:
+      - typebot-db
+
+  viewer:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/app
+    working_dir: /app
+    # command: sh -c "pnpm dev"
+    command: sh -c "cd apps/viewer && pm2-runtime start --name=typebot bun -- start -p 3000"
+    ports:
+      - '3002:3000'
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - VIEWER_URL=${VIEWER_URL}
+    depends_on:
+      - typebot-db
+
+  typebot-db:
+    image: postgres:16
     ports:
       - '5432:5432'
     restart: always
@@ -10,6 +44,7 @@ services:
     environment:
       POSTGRES_DB: 'typebot'
       POSTGRES_PASSWORD: 'typebot'
+
   minio:
     image: minio/minio
     command: server /data
@@ -20,6 +55,9 @@ services:
       MINIO_ROOT_PASSWORD: minio123
     volumes:
       - s3_data:/data
+    depends_on:
+      - builder
+      - viewer
   # This service just make sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
