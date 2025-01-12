@@ -23,3 +23,7 @@ body {
   opacity: 1 !important;
   visibility: visible !important;
 } */
+
+.chakra-stack {
+  color: grey;
+}

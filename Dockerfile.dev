@@ -1,0 +1,33 @@
+FROM node:18-slim
+
+RUN apt-get update && \
+    apt-get install -y \
+    curl \
+    python3 \
+    python3-pip \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://bun.sh/install | bash
+
+ENV PATH="/root/.bun/bin:$PATH"
+
+RUN npm install -g pnpm
+
+RUN bun --version && python3 --version && pnpm -v
+
+WORKDIR /app
+
+COPY ./package.json ./
+
+COPY ./turbo.json ./
+
+COPY ./pnpm-workspace.yaml ./
+
+RUN pnpm install
+
+RUN pnpm turbo run build --filter=viewer --filter=builder
+
+RUN npm install -g pm2
+
+EXPOSE 3000
