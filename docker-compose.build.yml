@@ -10,8 +10,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=typebot
-      - POSTGRES_PASSWORD=typebot
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   typebot-builder:
     build:
       context: .
@@ -36,3 +36,5 @@ services:
     ports:
       - '3002:3000'
     env_file: .env
+volumes:
+  db_data:
