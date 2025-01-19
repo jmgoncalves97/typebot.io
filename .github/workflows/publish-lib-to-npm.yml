@@ -1,4 +1,4 @@
-name: Publish package to NPM
+name: Publish typebot-js to NPM
 
 on:
   push:
@@ -8,16 +8,16 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/typebot-js
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
-      - run: pnpm test
-      - run: pnpm build
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          package: './packages/typebot-js/package.json'
-          token: ${{ secrets.NPM_TOKEN }}
+      - run: pnpm turbo build --filter=typebot-js...
+      - name: Set NPM_TOKEN in config
+        run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+        working-directory: ./packages/typebot-js
+      - name: Publish
+        run: pnpm publish --no-git-checks --access public
+        working-directory: ./packages/typebot-js

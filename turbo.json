@@ -1,16 +1,54 @@
 {
   "baseBranch": "origin/main",
+  "globalDotEnv": [".env"],
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "dist/**", "build/**"],
-      "outputMode": "new-only"
+    "lint": {
+      "outputs": []
     },
-    "db#build": {
-      "cache": false
+    "format:fix": {
+      "outputs": []
     },
     "dev": {
-      "dependsOn": ["^dev"],
+      "dependsOn": [
+        "^dev",
+        "@typebot.io/prisma#db:generate",
+        "@typebot.io/prisma#db:push"
+      ],
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "build/**",
+        "public/__ENV.js"
+      ],
+      "outputMode": "new-only",
+      "dotEnv": [".env"]
+    },
+    "docs#build": {
+      "dependsOn": ["api:generate"],
+      "outputs": ["build/**"],
+      "outputMode": "new-only"
+    },
+    "api:generate": {
+      "dependsOn": ["bot-engine#build", "@typebot.io/prisma#db:generate"],
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:cleanDatabase": {
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "cache": false
+    },
+    "checkAndReportChatsUsage": {
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     }
   }

@@ -1,10 +1,14 @@
 import { Flex, Stack, Heading, Text, Button, VStack } from '@chakra-ui/react'
+import { Standard } from '@typebot.io/nextjs'
 import { ArrowRight } from 'assets/icons/ArrowRight'
-import { TypebotViewer } from 'bot-engine'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
-import { PublicTypebot, Typebot } from 'models'
+import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
+import { PublicTypebot, Typebot } from '@typebot.io/schemas'
+import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
+
+const nameBlockId = 'shuUtMDMw9P4iAHbz7B5SqJ'
+const messageBlockId = 'sqvXpT1YXE3Htp6BCPvVGv3'
 
 export const RealTimeResults = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
@@ -21,23 +25,16 @@ export const RealTimeResults = () => {
 
   useEffect(() => {
     fetchTemplate()
-    window.addEventListener('message', processMessage)
-    const interval = setInterval(refreshIframeContent, 30000)
-
-    return () => {
-      clearInterval(interval)
-      window.removeEventListener('message', processMessage)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const processMessage = (event: MessageEvent) => {
-    if (event.data.from === 'typebot') refreshIframeContent()
-  }
 
   const refreshIframeContent = () => {
     if (!iframeRef.current) return
     iframeRef.current.src += ''
+  }
+
+  const handleAnswer = ({ blockId }: { blockId: string }) => {
+    if ([nameBlockId, messageBlockId].includes(blockId))
+      setTimeout(refreshIframeContent, 1000)
   }
 
   return (
@@ -67,12 +64,12 @@ export const RealTimeResults = () => {
             data-aos="fade"
           >
             One of the main advantage of a chat application is that you collect
-            the user's responses on each question.{' '}
-            <strong>You won't loose any valuable data.</strong>
+            the user&apos;s responses on each question.{' '}
+            <strong>You won&apos;t lose any valuable data.</strong>
           </Text>
           <Flex>
             <Button
-              as={NextChakraLink}
+              as={Link}
               rightIcon={<ArrowRight />}
               href={`https://app.typebot.io/register`}
               variant="ghost"
@@ -88,16 +85,19 @@ export const RealTimeResults = () => {
           w="full"
           direction={['column', 'row']}
           spacing="4"
+          pos="relative"
           data-aos="fade"
         >
           {typebot && (
-            <Flex w="full" h="full" minH="300" borderWidth="1px" rounded="md">
-              <TypebotViewer
-                typebot={typebot}
-                style={{ borderRadius: '0.375rem' }}
-                apiHost="https://typebot.io"
-              />
-            </Flex>
+            <Standard
+              typebot="airtable-real-time"
+              onAnswer={handleAnswer}
+              style={{
+                borderRadius: '0.375rem',
+                borderWidth: '1px',
+                height: '533px',
+              }}
+            />
           )}
           <iframe
             ref={iframeRef}
@@ -110,6 +110,23 @@ export const RealTimeResults = () => {
               backgroundColor: 'white',
             }}
           />
+          <Flex
+            top="-60px"
+            right="-30px"
+            pos="absolute"
+            display={{ base: 'none', xl: 'flex' }}
+          >
+            <Text fontFamily="'Indie Flower'" fontSize="2xl">
+              It&apos;s a real Airtable view!
+            </Text>
+            <HandDrawnArrow
+              transform="rotate(30deg)"
+              boxSize="100px"
+              top="15px"
+              right="-60px"
+              pos="absolute"
+            />
+          </Flex>
         </Stack>
       </Stack>
     </Flex>

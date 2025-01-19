@@ -8,13 +8,13 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import * as React from 'react'
 import { Header } from '../../common/Header/Header'
 import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
+import Link from 'next/link'
 import Image from 'next/image'
-import builderScreenshotSrc from 'public/images/homepage/builder.png'
+import builderScreenshotSrc from 'public/images/builder-screenshot.png'
 
 export const Hero = () => {
   return (
@@ -33,7 +33,7 @@ export const Hero = () => {
               bgClip="text"
               data-aos="fade-up"
             >
-              Open-source conversational forms builder
+              Build advanced chatbots visually
             </Heading>
             <Text
               fontSize={['lg', 'xl']}
@@ -52,7 +52,7 @@ export const Hero = () => {
               data-aos-delay="200"
             >
               <Button
-                as={NextChakraLink}
+                as={Link}
                 href="https://app.typebot.io/register"
                 colorScheme="orange"
                 size="lg"

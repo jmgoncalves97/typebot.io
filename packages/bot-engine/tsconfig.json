@@ -1,24 +1,9 @@
 {
+  "extends": "@typebot.io/tsconfig/base.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
-    "lib": [
-      "ES2017",
-      "DOM"
-    ],
-    "target": "es6",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "jsx": "react",
-    "module": "ESNext",
-    "declaration": true,
-    "declarationDir": "types",
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "emitDeclarationOnly": true,
-    "baseUrl": "./src",
-    "downlevelIteration": true
+    "jsx": "preserve",
+    "lib": ["ES2021"]
   }
 }

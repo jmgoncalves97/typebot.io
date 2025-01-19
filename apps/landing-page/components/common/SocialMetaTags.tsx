@@ -5,7 +5,7 @@ export const SocialMetaTags = ({
   title = 'Typebot - Open-source conversational apps builder',
   description = 'Powerful blocks to create unique chat experiences. Embed them anywhere on your apps and start collecting results like magic.',
   currentUrl,
-  imagePreviewUrl = 'https://www.typebot.io/images/preview.png',
+  imagePreviewUrl = 'https://home.typebot.io/images/preview.png',
 }: {
   title?: string
   description?: string
@@ -30,5 +30,7 @@ export const SocialMetaTags = ({
 
     <meta property="og:type" content="website" />
     <meta property="twitter:card" content="summary_large_image" />
+
+    <meta property="fb:app_id" content="2919783058077552" />
   </Head>
 )

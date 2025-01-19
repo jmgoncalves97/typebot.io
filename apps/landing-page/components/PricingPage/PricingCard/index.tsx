@@ -11,11 +11,12 @@ import {
 import * as React from 'react'
 import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
+import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
 
 export interface PricingCardData {
   features: React.ReactNode[]
   name: string
-  price: string
+  price: number | string
   featureLabel?: string
 }
 
@@ -33,6 +34,7 @@ export const PricingCard = ({
 }: PricingCardProps) => {
   const { features, price, name } = data
   const accentColor = useColorModeValue('blue.500', 'white')
+  const formattedPrice = typeof price === 'number' ? formatPrice(price) : price
 
   return (
     <Card rounded="xl" bgColor="gray.800" {...rest}>
@@ -52,9 +54,9 @@ export const PricingCard = ({
             my="8"
           >
             <Heading size="2xl" fontWeight="inherit" lineHeight="0.9em">
-              {price}
+              {formattedPrice}
             </Heading>
-            {(price.includes('$') || price.includes('€')) && (
+            {typeof price === 'number' && (
               <Text fontWeight="inherit" fontSize="xl">
                 / month
               </Text>

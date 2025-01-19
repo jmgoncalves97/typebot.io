@@ -11,12 +11,12 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { TypebotViewer } from 'bot-engine'
-import { PublicTypebot } from 'models'
-import { sendRequest } from 'utils'
+import { PublicTypebot } from '@typebot.io/schemas'
+import { sendRequest } from '@typebot.io/lib'
 import { DontIcon } from 'assets/icons/DontIcon'
 import { DoIcon } from 'assets/icons/DoIcon'
 import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
+import { Standard } from '@typebot.io/nextjs'
 
 export const IntroducingChatApps = () => {
   const [typebot, setTypebot] = useState<PublicTypebot>()
@@ -49,7 +49,7 @@ export const IntroducingChatApps = () => {
             textAlign="center"
             data-aos="fade"
           >
-            Introducing Conversational Apps
+            Replace your old school forms with chatbots
           </Heading>
           <Text
             textAlign="center"
@@ -83,18 +83,14 @@ export const IntroducingChatApps = () => {
           >
             <DoIcon />
             {typebot && (
-              <Flex
-                w="full"
-                h="full"
-                minH={['600px', '0']}
-                borderWidth="1px"
-                rounded="md"
-              >
-                <TypebotViewer
-                  typebot={typebot}
-                  style={{ borderRadius: '0.375rem' }}
-                />
-              </Flex>
+              <Standard
+                typebot={typebot}
+                style={{
+                  borderRadius: '0.375rem',
+                  borderWidth: '1px',
+                  height: '562px',
+                }}
+              />
             )}
             <Flex top="-20px" right="40px" pos="absolute">
               <Text fontFamily="'Indie Flower'" fontSize="2xl">

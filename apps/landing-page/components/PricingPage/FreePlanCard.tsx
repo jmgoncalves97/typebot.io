@@ -1,9 +1,9 @@
-import { chakra, Tooltip, Text } from '@chakra-ui/react'
+import { chakra, Tooltip, Text, Button } from '@chakra-ui/react'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
+import Link from 'next/link'
 import React from 'react'
 import { PricingCard } from './PricingCard'
-import { ActionButton } from './PricingCard/ActionButton'
+import { chatsLimits } from '@typebot.io/lib/billing/constants'
 
 export const FreePlanCard = () => (
   <PricingCard
@@ -14,7 +14,8 @@ export const FreePlanCard = () => (
         'Unlimited typebots',
         <>
           <Text>
-            <chakra.span fontWeight="bold">300 chats</chakra.span> included
+            <chakra.span fontWeight="bold">{chatsLimits.FREE}</chakra.span>{' '}
+            chats/month
           </Text>
           &nbsp;
           <Tooltip
@@ -34,12 +35,18 @@ export const FreePlanCard = () => (
       ],
     }}
     button={
-      <NextChakraLink
+      <Button
+        as={Link}
         href="https://app.typebot.io/register"
-        _hover={{ textDecor: 'none' }}
+        variant="outline"
+        colorScheme="gray"
+        size="lg"
+        w="full"
+        fontWeight="extrabold"
+        py={{ md: '8' }}
       >
-        <ActionButton variant="outline">Get started</ActionButton>
-      </NextChakraLink>
+        Get started
+      </Button>
     }
   />
 )

@@ -92,8 +92,7 @@ const components = {
   },
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const theme: any = extendTheme({
+export const theme = extendTheme({
   fonts,
   components,
   colors,

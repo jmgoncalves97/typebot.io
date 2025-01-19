@@ -1,10 +1,9 @@
 import { PlaywrightTestConfig } from '@playwright/test'
 import path from 'path'
-import { playwrightBaseConfig } from 'configs/playwright'
+import { playwrightBaseConfig } from '@typebot.io/lib/playwright/baseConfig'
 
 const config: PlaywrightTestConfig = {
   ...playwrightBaseConfig,
-  testDir: path.join(__dirname, 'playwright/tests'),
   webServer: process.env.CI
     ? {
         ...(playwrightBaseConfig.webServer as { command: string }),
@@ -14,9 +13,8 @@ const config: PlaywrightTestConfig = {
   use: {
     ...playwrightBaseConfig.use,
     baseURL: process.env.NEXTAUTH_URL,
-    storageState: path.join(__dirname, 'playwright/firstUser.json'),
+    storageState: path.join(__dirname, 'src/test/storageState.json'),
   },
-  outputDir: path.join(__dirname, 'playwright/test-results/'),
 }
 
 export default config

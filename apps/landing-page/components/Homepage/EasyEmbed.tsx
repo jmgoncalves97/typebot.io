@@ -1,10 +1,10 @@
 import { Flex, Stack, Heading, Box, Text, Button } from '@chakra-ui/react'
 import React from 'react'
 import Image from 'next/image'
-import nativeFeelingSrc from 'public/images/homepage/native-feeling.png'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
+import nativeFeelingSrc from 'public/images/native-feeling.png'
 import { ArrowRight } from 'assets/icons/ArrowRight'
 import { Flare } from 'assets/illustrations/Flare'
+import Link from 'next/link'
 
 export const EasyEmbed = () => {
   return (
@@ -38,11 +38,11 @@ export const EasyEmbed = () => {
           >
             Embedding your typebot in your applications is a walk in the park.
             Typebot gives you several step-by-step platform-specific
-            instructions. Your typebot will always feel "native".
+            instructions. Your typebot will always feel &quot;native&quot;.
           </Text>
           <Flex data-aos="fade">
             <Button
-              as={NextChakraLink}
+              as={Link}
               rightIcon={<ArrowRight />}
               href={`https://app.typebot.io/register`}
               variant="ghost"
