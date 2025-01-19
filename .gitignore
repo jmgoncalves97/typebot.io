@@ -3,6 +3,7 @@ node_modules
 .env.local
 workspace.code-workspace
 .DS_Store
+.pnpm-store
 .turbo
 .idea
 authenticatedState.json
