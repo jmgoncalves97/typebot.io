@@ -11,8 +11,14 @@ export const computeRiskLevel = (typebot: any) => {
   )
     return 100
   if (
-    env.RADAR_CUMULATIVE_KEYWORDS?.every((keyword) =>
-      stringifiedTypebot.toLowerCase().includes(keyword)
+    env.RADAR_CUMULATIVE_KEYWORDS?.some((set) =>
+      set.every((keyword) =>
+        keyword.some((k) =>
+          new RegExp(`(?<!https?://[^\\s"]*)\\b${k}\\b`, 'gi').test(
+            stringifiedTypebot
+          )
+        )
+      )
     )
   )
     return 100

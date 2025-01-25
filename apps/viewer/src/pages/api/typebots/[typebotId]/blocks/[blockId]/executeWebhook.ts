@@ -9,8 +9,14 @@ import {
 } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
-import { byId, isEmpty, isWebhookBlock, omit } from '@typebot.io/lib'
-import { parseAnswers } from '@typebot.io/lib/results'
+import {
+  byId,
+  isEmpty,
+  isNotDefined,
+  isWebhookBlock,
+  omit,
+} from '@typebot.io/lib'
+import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
 import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import { stringify } from 'qs'
 import Cors from 'cors'
@@ -23,15 +29,16 @@ import { saveSuccessLog } from '@typebot.io/bot-engine/logs/saveSuccessLog'
 import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
 import {
   HttpMethod,
+  defaultTimeout,
   defaultWebhookAttributes,
+  maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { getBlockById } from '@typebot.io/lib/getBlockById'
 import {
   convertKeyValueTableToObject,
   longReqTimeoutWhitelist,
-  longRequestTimeout,
-  responseDefaultTimeout,
 } from '@typebot.io/bot-engine/blocks/integrations/webhook/executeWebhookBlock'
+import { env } from '@typebot.io/env'
 
 const cors = initMiddleware(Cors())
 
@@ -78,6 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       resultId,
       parentTypebotIds,
       isCustomBody: block.options?.isCustomBody,
+      timeout: block.options?.timeout,
     })
     return res.status(200).send(result)
   }
@@ -96,6 +104,7 @@ export const executeWebhook =
     resultId,
     parentTypebotIds = [],
     isCustomBody,
+    timeout,
   }: {
     webhook: Webhook
     variables: Variable[]
@@ -104,6 +113,7 @@ export const executeWebhook =
     resultId?: string
     parentTypebotIds: string[]
     isCustomBody?: boolean
+    timeout?: number
   }): Promise<WebhookResponse> => {
     if (!webhook.url)
       return {
@@ -184,7 +194,13 @@ export const executeWebhook =
           : undefined,
       body: body && !isJson ? body : undefined,
       timeout: {
-        response: isLongRequest ? longRequestTimeout : responseDefaultTimeout,
+        response: isNotDefined(env.CHAT_API_TIMEOUT)
+          ? undefined
+          : timeout && timeout !== defaultTimeout
+          ? Math.min(timeout, maxTimeout) * 1000
+          : isLongRequest
+          ? maxTimeout * 1000
+          : defaultTimeout * 1000,
       },
     }
     try {

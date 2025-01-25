@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.2.31",
+  "version": "0.2.37",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "dev": "rollup --watch --config rollup.config.js",
     "build": "rollup --config rollup.config.js",
     "lint": "eslint --fix \"src/**/*.ts*\"",
-    "format:fix": "prettier --write ./src"
+    "format:check": "prettier --check ./src"
   },
   "license": "MIT",
   "dependencies": {

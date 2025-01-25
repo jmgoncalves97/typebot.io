@@ -79,7 +79,9 @@ const baseEnv = {
     RADAR_CUMULATIVE_KEYWORDS: z
       .string()
       .min(1)
-      .transform((val) => val.split(','))
+      .transform((val) =>
+        val.split('/').map((s) => s.split(',').map((s) => s.split('|')))
+      )
       .optional(),
   },
   client: {
@@ -281,6 +283,11 @@ const whatsAppEnv = {
     WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_NAME: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_LANG: z.string().min(1).optional().default('en'),
+    WHATSAPP_CLOUD_API_URL: z
+      .string()
+      .url()
+      .optional()
+      .default('https://graph.facebook.com'),
   },
 }
 
