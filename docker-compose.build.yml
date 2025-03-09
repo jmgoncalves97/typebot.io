@@ -3,22 +3,29 @@ services:
   typebot-db:
     image: postgres:16
     restart: always
-    mem_limit: 512m
-    cpus: 0.5
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: '512M'
+          cpus: '0.50'
     ports:
       - '5434:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file: .env
   typebot-builder:
+    image: typebotio-typebot-builder
     build:
       context: .
       args:
         - SCOPE=builder
-    mem_limit: 1g
-    cpus: 0.5
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: '1G'
+          cpus: '0.50'
     depends_on:
       - typebot-db
     ports:
@@ -27,14 +34,21 @@ services:
       - 'host.docker.internal:host-gateway'
     env_file: .env
   typebot-viewer:
+    image: typebotio-typebot-viewer
     build:
       context: .
       args:
         - SCOPE=viewer
-    mem_limit: 512m
-    cpus: 0.5
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: '512M'
+          cpus: '0.50'
     ports:
       - '3002:3000'
     env_file: .env
 volumes:
   db_data:
+    name: typebotio_db_data
+    external: true
