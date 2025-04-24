@@ -1,3 +1,4 @@
+import fuzzysort from 'fuzzysort'
 import { Variable } from '@typebot.io/schemas'
 import { parseVariables } from './parseVariables'
 import { extractVariablesFromText } from './extractVariablesFromText'
@@ -32,6 +33,7 @@ export const executeFunction = async ({
   const func = AsyncFunction(
     ...args.map(({ id }) => id),
     'setVariable',
+    'fuzzysort',
     parsedBody
   )
 
@@ -44,7 +46,7 @@ export const executeFunction = async ({
 
   try {
     const output: unknown = await timeout.wrap(
-      func(...args.map(({ value }) => value), setVariable),
+      func(...args.map(({ value }) => value), setVariable, fuzzysort),
       defaultTimeout * 1000
     )
     timeout.clear()
